@@ -114,3 +114,6 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
+
+require("mason").setup()
+require("mason-lspconfig").setup()

@@ -76,5 +76,7 @@ require("lazy").setup({
 	"saadparwaiz1/cmp_luasnip",
 	"L3MON4D3/LuaSnip",
 	"nvim-tree/nvim-tree.lua",
-	"nvim-tree/nvim-web-devicons"
+	"nvim-tree/nvim-web-devicons",
+	"williamboman/mason.nvim",
+	"williamboman/mason-lspconfig.nvim"
 })
