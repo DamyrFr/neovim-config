@@ -1,9 +1,19 @@
+-- list LSP :
+local servers = { "pyright", "yamlls", "bashls" , "dockerls", "golangci_lint_ls", "jsonls", "terraformls", "lua_ls" }
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+-- Init Mason used for installing LSP on Neovim
+-- Cf : https://github.com/williamboman/mason-lspconfig.nvim
+require("mason").setup()
+require("mason-lspconfig").setup {
+	ensure_installed = servers,
+	automatic_installation = true,
+}
+
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -39,9 +49,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-local lspconfig = require('lspconfig')
-
-local servers = { 'ansiblels', 'dockerls', 'bashls', 'pyright' }
 for _, lsp in pairs(servers) do
   require('lspconfig')[lsp].setup {
     on_attach = on_attach,
@@ -114,6 +121,3 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
-require("mason").setup()
-require("mason-lspconfig").setup()
