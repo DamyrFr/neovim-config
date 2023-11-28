@@ -1,5 +1,5 @@
 -- list LSP :
-local servers = { "pyright", "yamlls", "bashls" , "dockerls", "golangci_lint_ls", "jsonls", "terraformls", "lua_ls" }
+local servers = { "pyright", "yamlls", "jsonls", "remark_ls", "bashls", "dockerls", "gopls", "jsonls", "terraformls", "lua_ls" }
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
