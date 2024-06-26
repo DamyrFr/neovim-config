@@ -75,6 +75,7 @@ require("lazy").setup({
 		  require("hlchunk").setup({})
 		end
 	},
+	"b0o/schemastore.nvim",
 	"nvim-treesitter/nvim-treesitter",
 	"neovim/nvim-lspconfig",
 	"hrsh7th/nvim-cmp",
