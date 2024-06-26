@@ -3,3 +3,5 @@ vim.g.loaded_netrwPlugin = 1
 require('plugins')
 require('settings')
 require('lsp')
+vim.cmd[[colorscheme tokyonight-moon]]
+

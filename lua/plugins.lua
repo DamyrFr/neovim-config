@@ -23,6 +23,12 @@ require("lazy").setup({
 		lazy = false,
 		priority = 1000,
 		opts = {},
+		config = function ()
+			require("tokyonight").setup({
+				style = "moon",
+				light_style = "moon",
+		  })
+		end,
 	},
 	{
 	    "sontungexpt/sttusline",
