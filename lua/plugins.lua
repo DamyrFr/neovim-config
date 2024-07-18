@@ -13,7 +13,12 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	"f-person/git-blame.nvim",
-	"lewis6991/gitsigns.nvim",
+	{
+	  'lewis6991/gitsigns.nvim',
+		config = function()
+			require('gitsigns').setup()
+		end
+	},
 	{
 		'nvim-telescope/telescope.nvim', tag = '0.1.4',
       		dependencies = { 'nvim-lua/plenary.nvim' }
