@@ -25,42 +25,53 @@ require("lazy").setup({
 		opts = {},
 	},
 	{
-	    "sontungexpt/sttusline",
-	    dependencies = {
-	        "nvim-tree/nvim-web-devicons",
-	    },
-	    event = { "BufEnter" },
-	    config = function(_, opts)
-	        require("sttusline").setup {
-	            statusline_color = "StatusLine",
-	            -- | 1 | 2 | 3
-	            -- recommended: 3
-	            laststatus = 3,
-	            disabled = {
-	                filetypes = {
-	                    -- "NvimTree",
-	                    -- "lazy",
-	                },
-	                buftypes = {
-	                    -- "terminal",
-	                },
-	            },
-	            components = {
-	                "mode",
-	                "filename",
-	                "git-branch",
-	                "git-diff",
-	                "%=",
-	                "diagnostics",
-	                "lsps-formatters",
-	                "copilot",
-	                "indent",
-	                "encoding",
-	                "pos-cursor",
-	                "pos-cursor-progress",
-	            },
-	        }
-	    end,
+		'someone-stole-my-name/yaml-companion.nvim',
+	  dependencies = {
+	      'neovim/nvim-lspconfig',
+				'nvim-lua/plenary.nvim',
+				'nvim-telescope/telescope.nvim'
+	  },
+		config = function()
+		  require("telescope").load_extension("yaml_schema")
+		end
+	},
+	{
+	  "sontungexpt/sttusline",
+	  dependencies = {
+	      "nvim-tree/nvim-web-devicons",
+	  },
+	  event = { "BufEnter" },
+	  config = function(_, opts)
+	      require("sttusline").setup {
+	          statusline_color = "StatusLine",
+	          -- | 1 | 2 | 3
+	          -- recommended: 3
+	          laststatus = 3,
+	          disabled = {
+	              filetypes = {
+	                  -- "NvimTree",
+	                  -- "lazy",
+	              },
+	              buftypes = {
+	                  -- "terminal",
+	              },
+	          },
+	          components = {
+	              "mode",
+	              "filename",
+	              "git-branch",
+	              "git-diff",
+	              "%=",
+	              "diagnostics",
+	              "lsps-formatters",
+	              "copilot",
+	              "indent",
+	              "encoding",
+	              "pos-cursor",
+	              "pos-cursor-progress",
+	          },
+	      }
+	  end,
 	},
 	{
 		"shellRaining/hlchunk.nvim",
