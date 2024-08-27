@@ -20,7 +20,7 @@ opt.encoding = 'utf-8'
 opt.fileencoding = 'utf-8'
 vim.opt.termguicolors = true
 vim.opt.clipboard:prepend {"unnamedplus"}
-vim.cmd[[colorscheme tokyonight-moon]]
+vim.cmd[[colorscheme tokyonight-day]]
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
