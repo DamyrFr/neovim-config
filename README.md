@@ -1,5 +1,9 @@
 # 🚀 My Awesome Neovim Configuration
 
+<a href="https://dotfyle.com/DamyrFr/neovim-config"><img src="https://dotfyle.com/DamyrFr/neovim-config/badges/plugins?style=flat" /></a>
+<a href="https://dotfyle.com/DamyrFr/neovim-config"><img src="https://dotfyle.com/DamyrFr/neovim-config/badges/leaderkey?style=flat" /></a>
+<a href="https://dotfyle.com/DamyrFr/neovim-config"><img src="https://dotfyle.com/DamyrFr/neovim-config/badges/plugin-manager?style=flat" /></a>
+
 Welcome to my Neovim configuration repository! This setup is designed to provide a powerful and efficient editing experience using Neovim, with a focus on modularity and ease of use. This configuration is used by [DamyrFr/ansible-personal-computer](https://github.com/DamyrFr/ansible-personal-computer).
 
 ## 📸 Screenshot
@@ -34,10 +38,53 @@ Welcome to my Neovim configuration repository! This setup is designed to provide
 └── README.md
 ```
 
-## 🔧 Customization
+## 🔧 Plugins
 
-Feel free to modify any part of the configuration to suit your needs:
+### colorscheme
 
-- Add or remove plugins in `lua/plugins/init.lua`
-- Adjust Neovim and plugin settings in `lua/settings/init.lua`
-- Customize LSP configurations in `lua/lsp/init.lua`
++ [folke/tokyonight.nvim](https://dotfyle.com/plugins/folke/tokyonight.nvim)
+### completion
+
++ [hrsh7th/nvim-cmp](https://dotfyle.com/plugins/hrsh7th/nvim-cmp)
+### file-explorer
+
++ [nvim-tree/nvim-tree.lua](https://dotfyle.com/plugins/nvim-tree/nvim-tree.lua)
+### fuzzy-finder
+
++ [nvim-telescope/telescope.nvim](https://dotfyle.com/plugins/nvim-telescope/telescope.nvim)
+### git
+
++ [lewis6991/gitsigns.nvim](https://dotfyle.com/plugins/lewis6991/gitsigns.nvim)
++ [f-person/git-blame.nvim](https://dotfyle.com/plugins/f-person/git-blame.nvim)
+### icon
+
++ [nvim-tree/nvim-web-devicons](https://dotfyle.com/plugins/nvim-tree/nvim-web-devicons)
+### indent
+
++ [shellRaining/hlchunk.nvim](https://dotfyle.com/plugins/shellRaining/hlchunk.nvim)
+### lsp
+
++ [neovim/nvim-lspconfig](https://dotfyle.com/plugins/neovim/nvim-lspconfig)
+### lsp-installer
+
++ [williamboman/mason.nvim](https://dotfyle.com/plugins/williamboman/mason.nvim)
+### nvim-dev
+
++ [nvim-lua/plenary.nvim](https://dotfyle.com/plugins/nvim-lua/plenary.nvim)
+### plugin-manager
+
++ [folke/lazy.nvim](https://dotfyle.com/plugins/folke/lazy.nvim)
+### snippet
+
++ [L3MON4D3/LuaSnip](https://dotfyle.com/plugins/L3MON4D3/LuaSnip)
+### statusline
+
++ [sontungexpt/sttusline](https://dotfyle.com/plugins/sontungexpt/sttusline)
+### syntax
+
++ [nvim-treesitter/nvim-treesitter](https://dotfyle.com/plugins/nvim-treesitter/nvim-treesitter)
+### yaml
+
++ [someone-stole-my-name/yaml-companion.nvim](https://dotfyle.com/plugins/someone-stole-my-name/yaml-companion.nvim)
+
+This readme was generated (partially) by [Dotfyle](https://dotfyle.com)
