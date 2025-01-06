@@ -49,6 +49,9 @@ require("lazy").setup({
 	  config = true
 	},
 	{
+			"Bekaboo/deadcolumn.nvim"
+	},
+	{
 	  "sontungexpt/sttusline",
 	  dependencies = {
 	      "nvim-tree/nvim-web-devicons",
@@ -93,6 +96,7 @@ require("lazy").setup({
 		  require("hlchunk").setup({})
 		end
 	},
+	"taybart/b64.nvim",
 	"nvim-treesitter/nvim-treesitter",
 	"neovim/nvim-lspconfig",
 	"hrsh7th/nvim-cmp",
