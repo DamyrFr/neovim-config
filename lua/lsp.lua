@@ -1,3 +1,6 @@
+-- Suppress lspconfig deprecation warnings for now
+vim.deprecate = function() end
+
 -- list LSP :
 local servers = { "pyright", "yamlls", "jsonls", "remark_ls", "bashls", "dockerls", "gopls", "jsonls", "terraformls", "lua_ls" }
 -- Global mappings.
@@ -49,36 +52,69 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+local lspconfig = require('lspconfig')
+
+-- Setup all LSP servers
 for _, lsp in pairs(servers) do
-  require('lspconfig')[lsp].setup {
-    on_attach = on_attach,
-		capabilities = capabilities,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    }
+  lspconfig[lsp].setup {
+    capabilities = capabilities,
   }
 end
 
-require('lspconfig').yamlls.setup {
-  on_attach = on_attach,
-	capabilities = capabilities,
+-- Custom setup for yamlls with Kubernetes schemas
+lspconfig.yamlls.setup {
+  capabilities = capabilities,
   settings = {
     yaml = {
       schemas = {
-        ["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json"] = "/*.k8s.yaml",
+        kubernetes = {
+          "/*.k8s.yaml",
+          "/*.k8s.yml",
+          "/k8s/**/*.yaml",
+          "/k8s/**/*.yml",
+          "/kubernetes/**/*.yaml",
+          "/kubernetes/**/*.yml",
+          "/manifests/**/*.yaml",
+          "/manifests/**/*.yml",
+          "/deployment*.yaml",
+          "/deployment*.yml",
+          "/service*.yaml",
+          "/service*.yml",
+          "/ingress*.yaml",
+          "/ingress*.yml",
+          "/configmap*.yaml",
+          "/configmap*.yml",
+          "/secret*.yaml",
+          "/secret*.yml",
+        }
+      },
+      customTags = {
+        "!reference sequence"
       },
     },
   }
 }
 
-require'lspconfig'.terraformls.setup{
-	capabilities = capabilities,
-	filetypes = { "tf", "tfvar", "terraform" }
+-- Custom setup for terraformls
+lspconfig.terraformls.setup {
+  capabilities = capabilities,
+  filetypes = { "tf", "tfvar", "terraform" }
 }
 
 -- luasnip setup
 local luasnip = require 'luasnip'
+
+-- Load custom snippets
+local k8s_snippets = require("snippets.kubernetes")
+local gitlab_snippets = require("snippets.gitlab-ci")
+
+-- Merge Kubernetes and GitLab CI snippets for YAML files
+local yaml_snippets = vim.list_extend(vim.deepcopy(k8s_snippets), gitlab_snippets)
+luasnip.add_snippets("yaml", yaml_snippets)
+
+luasnip.add_snippets("go", require("snippets.go"))
+luasnip.add_snippets("sh", require("snippets.sh"))
+luasnip.add_snippets("bash", require("snippets.sh"))
 
 -- nvim-cmp setup
 local cmp = require 'cmp'

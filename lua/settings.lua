@@ -11,6 +11,8 @@ opt.laststatus = 2
 opt.tabstop = 2
 opt.softtabstop = 2
 opt.shiftwidth = 2
+opt.expandtab = true
+opt.cursorcolumn = true
 opt.ruler = true
 opt.syntax = "on"
 opt.smartcase = true
@@ -31,5 +33,9 @@ end
 map('', '<C-D>', ':Telescope find_files<CR>')
 map('', '<C-F>', ':Telescope grep_string<CR>')
 map('', '<C-X>', ':NvimTreeToggle<CR>')
+
+-- Base64 encode/decode shortcuts
+map('v', '<leader>e64', ':B64Encode<CR>')
+map('v', '<leader>d64', ':B64Decode<CR>')
 
 require("nvim-tree").setup()
