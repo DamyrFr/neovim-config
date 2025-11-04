@@ -66,7 +66,29 @@ require('lspconfig').yamlls.setup {
   settings = {
     yaml = {
       schemas = {
-        ["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json"] = "/*.k8s.yaml",
+        kubernetes = {
+          "/*.k8s.yaml",
+          "/*.k8s.yml",
+          "/k8s/**/*.yaml",
+          "/k8s/**/*.yml",
+          "/kubernetes/**/*.yaml",
+          "/kubernetes/**/*.yml",
+          "/manifests/**/*.yaml",
+          "/manifests/**/*.yml",
+          "/deployment*.yaml",
+          "/deployment*.yml",
+          "/service*.yaml",
+          "/service*.yml",
+          "/ingress*.yaml",
+          "/ingress*.yml",
+          "/configmap*.yaml",
+          "/configmap*.yml",
+          "/secret*.yaml",
+          "/secret*.yml",
+        }
+      },
+      customTags = {
+        "!reference sequence"
       },
     },
   }
@@ -79,6 +101,12 @@ require'lspconfig'.terraformls.setup{
 
 -- luasnip setup
 local luasnip = require 'luasnip'
+
+-- Load custom snippets
+luasnip.add_snippets("yaml", require("snippets.kubernetes"))
+luasnip.add_snippets("go", require("snippets.go"))
+luasnip.add_snippets("sh", require("snippets.sh"))
+luasnip.add_snippets("bash", require("snippets.sh"))
 
 -- nvim-cmp setup
 local cmp = require 'cmp'
