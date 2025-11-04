@@ -114,4 +114,69 @@ return {
     t({"", "            image: "}), i(4, "image:tag"),
     t({"", "            command: ["}), i(5, "\"command\""), t({"]", "          restartPolicy: "}), i(6, "OnFailure")
   }),
+
+  -- FluxCD Kustomization
+  s("kustomization", {
+    t({"apiVersion: kustomize.toolkit.fluxcd.io/v1", "kind: Kustomization", "metadata:", "  name: "}), i(1, "kustomization-name"),
+    t({"", "  namespace: "}), i(2, "flux-system"),
+    t({"", "spec:", "  interval: "}), i(3, "5m"),
+    t({"", "  path: "}), i(4, "./clusters/production"),
+    t({"", "  prune: "}), i(5, "true"),
+    t({"", "  sourceRef:", "    kind: "}), i(6, "GitRepository"),
+    t({"", "    name: "}), i(7, "flux-system"),
+    t({"", "  targetNamespace: "}), i(8, "default")
+  }),
+
+  -- FluxCD HelmRelease
+  s("helmrelease", {
+    t({"apiVersion: helm.toolkit.fluxcd.io/v2", "kind: HelmRelease", "metadata:", "  name: "}), i(1, "release-name"),
+    t({"", "  namespace: "}), i(2, "default"),
+    t({"", "spec:", "  interval: "}), i(3, "5m"),
+    t({"", "  chart:", "    spec:", "      chart: "}), i(4, "chart-name"),
+    t({"", "      version: "}), i(5, "1.0.0"),
+    t({"", "      sourceRef:", "        kind: HelmRepository", "        name: "}), i(6, "repository-name"),
+    t({"", "        namespace: "}), i(7, "flux-system"),
+    t({"", "      interval: "}), i(8, "1m"),
+    t({"", "  values:", "    "}), i(9, "# helm values here")
+  }),
+
+  -- FluxCD HelmRepository
+  s("helmrepository", {
+    t({"apiVersion: source.toolkit.fluxcd.io/v1", "kind: HelmRepository", "metadata:", "  name: "}), i(1, "repository-name"),
+    t({"", "  namespace: "}), i(2, "flux-system"),
+    t({"", "spec:", "  interval: "}), i(3, "1h"),
+    t({"", "  url: "}), i(4, "https://charts.example.com")
+  }),
+
+  -- FluxCD ImageRepository
+  s("imagerepository", {
+    t({"apiVersion: image.toolkit.fluxcd.io/v1", "kind: ImageRepository", "metadata:", "  name: "}), i(1, "image-repo-name"),
+    t({"", "  namespace: "}), i(2, "flux-system"),
+    t({"", "spec:", "  image: "}), i(3, "ghcr.io/org/app"),
+    t({"", "  interval: "}), i(4, "1m"),
+    t({"", "  secretRef:", "    name: "}), i(5, "registry-credentials")
+  }),
+
+  -- FluxCD ImagePolicy
+  s("imagepolicy", {
+    t({"apiVersion: image.toolkit.fluxcd.io/v1", "kind: ImagePolicy", "metadata:", "  name: "}), i(1, "image-policy-name"),
+    t({"", "  namespace: "}), i(2, "flux-system"),
+    t({"", "spec:", "  imageRepositoryRef:", "    name: "}), i(3, "image-repo-name"),
+    t({"", "  policy:", "    "}), i(4, "semver"), t({":", "      range: "}), i(5, ">=1.0.0")
+  }),
+
+  -- FluxCD ImageUpdateAutomation
+  s("imageupdateautomation", {
+    t({"apiVersion: image.toolkit.fluxcd.io/v1", "kind: ImageUpdateAutomation", "metadata:", "  name: "}), i(1, "image-update-name"),
+    t({"", "  namespace: "}), i(2, "flux-system"),
+    t({"", "spec:", "  interval: "}), i(3, "1m"),
+    t({"", "  sourceRef:", "    kind: GitRepository", "    name: "}), i(4, "flux-system"),
+    t({"", "  git:", "    checkout:", "      ref:", "        branch: "}), i(5, "main"),
+    t({"", "    commit:", "      author:", "        email: "}), i(6, "flux@example.com"),
+    t({"", "        name: "}), i(7, "Flux"),
+    t({"", "      messageTemplate: \""}), i(8, "Automated image update"),
+    t({"\"", "    push:", "      branch: "}), i(9, "main"),
+    t({"", "  update:", "    path: "}), i(10, "./clusters/production"),
+    t({"", "    strategy: Setters"})
+  }),
 }
