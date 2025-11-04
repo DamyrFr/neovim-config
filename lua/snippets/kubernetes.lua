@@ -6,7 +6,7 @@ local f = ls.function_node
 
 return {
   -- Basic Pod
-  s("k8s_pod", {
+  s("pod", {
     t({"apiVersion: v1", "kind: Pod", "metadata:", "  name: "}), i(1, "pod-name"),
     t({"", "  labels:", "    app: "}), i(2, "app-name"),
     t({"", "spec:", "  containers:", "  - name: "}), i(3, "container-name"),
@@ -19,7 +19,7 @@ return {
   }),
 
   -- Deployment
-  s("k8s_deployment", {
+  s("deployment", {
     t({"apiVersion: apps/v1", "kind: Deployment", "metadata:", "  name: "}), i(1, "deployment-name"),
     t({"", "  labels:", "    app: "}), i(2, "app-name"),
     t({"", "spec:", "  replicas: "}), i(3, "3"),
@@ -35,7 +35,7 @@ return {
   }),
 
   -- Service
-  s("k8s_service", {
+  s("service", {
     t({"apiVersion: v1", "kind: Service", "metadata:", "  name: "}), i(1, "service-name"),
     t({"", "spec:", "  selector:", "    app: "}), i(2, "app-name"),
     t({"", "  type: "}), i(3, "ClusterIP"),
@@ -44,24 +44,24 @@ return {
   }),
 
   -- ConfigMap
-  s("k8s_configmap", {
+  s("configmap", {
     t({"apiVersion: v1", "kind: ConfigMap", "metadata:", "  name: "}), i(1, "configmap-name"),
     t({"", "data:", "  "}), i(2, "key"), t(": "), i(3, "value")
   }),
 
   -- Secret
-  s("k8s_secret", {
+  s("secret", {
     t({"apiVersion: v1", "kind: Secret", "metadata:", "  name: "}), i(1, "secret-name"),
     t({"", "type: Opaque", "data:", "  "}), i(2, "key"), t(": "), i(3, "base64-encoded-value")
   }),
 
   -- Namespace
-  s("k8s_namespace", {
+  s("namespace", {
     t({"apiVersion: v1", "kind: Namespace", "metadata:", "  name: "}), i(1, "namespace-name")
   }),
 
   -- Ingress
-  s("k8s_ingress", {
+  s("ingress", {
     t({"apiVersion: networking.k8s.io/v1", "kind: Ingress", "metadata:", "  name: "}), i(1, "ingress-name"),
     t({"", "  annotations:", "    "}), i(2, "key"), t(": "), i(3, "value"),
     t({"", "spec:", "  rules:", "  - host: "}), i(4, "example.com"),
@@ -71,14 +71,14 @@ return {
   }),
 
   -- PersistentVolumeClaim
-  s("k8s_pvc", {
+  s("pvc", {
     t({"apiVersion: v1", "kind: PersistentVolumeClaim", "metadata:", "  name: "}), i(1, "pvc-name"),
     t({"", "spec:", "  accessModes:", "  - "}), i(2, "ReadWriteOnce"),
     t({"", "  resources:", "    requests:", "      storage: "}), i(3, "1Gi")
   }),
 
   -- StatefulSet
-  s("k8s_statefulset", {
+  s("statefulset", {
     t({"apiVersion: apps/v1", "kind: StatefulSet", "metadata:", "  name: "}), i(1, "statefulset-name"),
     t({"", "spec:", "  serviceName: "}), i(2, "service-name"),
     t({"", "  replicas: "}), i(3, "3"),
@@ -90,7 +90,7 @@ return {
   }),
 
   -- DaemonSet
-  s("k8s_daemonset", {
+  s("daemonset", {
     t({"apiVersion: apps/v1", "kind: DaemonSet", "metadata:", "  name: "}), i(1, "daemonset-name"),
     t({"", "spec:", "  selector:", "    matchLabels:", "      app: "}), i(2, "app-name"),
     t({"", "  template:", "    metadata:", "      labels:", "        app: "}), f(function(args) return args[1][1] end, {2}),
@@ -99,7 +99,7 @@ return {
   }),
 
   -- Job
-  s("k8s_job", {
+  s("job", {
     t({"apiVersion: batch/v1", "kind: Job", "metadata:", "  name: "}), i(1, "job-name"),
     t({"", "spec:", "  template:", "    spec:", "      containers:", "      - name: "}), i(2, "container-name"),
     t({"", "        image: "}), i(3, "image:tag"),
@@ -107,7 +107,7 @@ return {
   }),
 
   -- CronJob
-  s("k8s_cronjob", {
+  s("cronjob", {
     t({"apiVersion: batch/v1", "kind: CronJob", "metadata:", "  name: "}), i(1, "cronjob-name"),
     t({"", "spec:", "  schedule: \""}), i(2, "0 0 * * *"),
     t({"\"", "  jobTemplate:", "    spec:", "      template:", "        spec:", "          containers:", "          - name: "}), i(3, "container-name"),
