@@ -1,3 +1,6 @@
+-- Suppress lspconfig deprecation warnings for now
+vim.deprecate = function() end
+
 -- list LSP :
 local servers = { "pyright", "yamlls", "jsonls", "remark_ls", "bashls", "dockerls", "gopls", "jsonls", "terraformls", "lua_ls" }
 -- Global mappings.
@@ -49,20 +52,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
 -- Add additional capabilities supported by nvim-cmp
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
+local lspconfig = require('lspconfig')
+
+-- Setup all LSP servers
 for _, lsp in pairs(servers) do
-  require('lspconfig')[lsp].setup {
-    on_attach = on_attach,
-		capabilities = capabilities,
-    flags = {
-      -- This will be the default in neovim 0.7+
-      debounce_text_changes = 150,
-    }
+  lspconfig[lsp].setup {
+    capabilities = capabilities,
   }
 end
 
-require('lspconfig').yamlls.setup {
-  on_attach = on_attach,
-	capabilities = capabilities,
+-- Custom setup for yamlls with Kubernetes schemas
+lspconfig.yamlls.setup {
+  capabilities = capabilities,
   settings = {
     yaml = {
       schemas = {
@@ -94,9 +95,10 @@ require('lspconfig').yamlls.setup {
   }
 }
 
-require'lspconfig'.terraformls.setup{
-	capabilities = capabilities,
-	filetypes = { "tf", "tfvar", "terraform" }
+-- Custom setup for terraformls
+lspconfig.terraformls.setup {
+  capabilities = capabilities,
+  filetypes = { "tf", "tfvar", "terraform" }
 }
 
 -- luasnip setup

@@ -42,9 +42,10 @@ require("lazy").setup({
 	},
 	{
   "NeogitOrg/neogit",
+	  branch = "master",
 	  dependencies = {
-	    "nvim-lua/plenary.nvim",         -- required
-	    "sindrets/diffview.nvim",        -- optional - Diff integration
+	    { "nvim-lua/plenary.nvim", branch = "master" },
+	    { "sindrets/diffview.nvim", branch = "main" },
 	  },
 	  config = true
 	},
@@ -53,6 +54,7 @@ require("lazy").setup({
 	},
 	{
 	  "sontungexpt/sttusline",
+	  branch = "main",
 	  dependencies = {
 	      "nvim-tree/nvim-web-devicons",
 	  },
@@ -97,12 +99,14 @@ require("lazy").setup({
 		end
 	},
 	"taybart/b64.nvim",
-	"nvim-treesitter/nvim-treesitter",
+	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
 	"neovim/nvim-lspconfig",
-	"hrsh7th/nvim-cmp",
-	"hrsh7th/cmp-nvim-lsp",
-	"saadparwaiz1/cmp_luasnip",
-	"L3MON4D3/LuaSnip",
+	{ "hrsh7th/nvim-cmp", branch = "main" },
+	{ "hrsh7th/cmp-nvim-lsp", branch = "main" },
+	{ "hrsh7th/cmp-buffer", branch = "main" },
+	{ "hrsh7th/cmp-path", branch = "main" },
+	{ "saadparwaiz1/cmp_luasnip", branch = "master" },
+	{ "L3MON4D3/LuaSnip", branch = "master" },
 	"nvim-tree/nvim-tree.lua",
 	"nvim-tree/nvim-web-devicons",
 	"williamboman/mason.nvim",

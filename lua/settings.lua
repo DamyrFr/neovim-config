@@ -34,4 +34,8 @@ map('', '<C-D>', ':Telescope find_files<CR>')
 map('', '<C-F>', ':Telescope grep_string<CR>')
 map('', '<C-X>', ':NvimTreeToggle<CR>')
 
+-- Base64 encode/decode shortcuts
+map('v', '<leader>e64', ':B64Encode<CR>')
+map('v', '<leader>d64', ':B64Decode<CR>')
+
 require("nvim-tree").setup()
