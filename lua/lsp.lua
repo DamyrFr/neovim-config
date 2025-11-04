@@ -103,7 +103,13 @@ require'lspconfig'.terraformls.setup{
 local luasnip = require 'luasnip'
 
 -- Load custom snippets
-luasnip.add_snippets("yaml", require("snippets.kubernetes"))
+local k8s_snippets = require("snippets.kubernetes")
+local gitlab_snippets = require("snippets.gitlab-ci")
+
+-- Merge Kubernetes and GitLab CI snippets for YAML files
+local yaml_snippets = vim.list_extend(vim.deepcopy(k8s_snippets), gitlab_snippets)
+luasnip.add_snippets("yaml", yaml_snippets)
+
 luasnip.add_snippets("go", require("snippets.go"))
 luasnip.add_snippets("sh", require("snippets.sh"))
 luasnip.add_snippets("bash", require("snippets.sh"))
