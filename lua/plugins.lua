@@ -98,9 +98,34 @@ require("lazy").setup({
 		  require("hlchunk").setup({})
 		end
 	},
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- your configuration comes here
+      -- or leave it empty to use the default settings
+      -- refer to the configuration section below
+    },
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
+      },
+    },
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {},
+  },
 	"taybart/b64.nvim",
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-	"neovim/nvim-lspconfig",
+	{ "neovim/nvim-lspconfig" },
 	{ "hrsh7th/nvim-cmp", branch = "main" },
 	{ "hrsh7th/cmp-nvim-lsp", branch = "main" },
 	{ "hrsh7th/cmp-buffer", branch = "main" },
