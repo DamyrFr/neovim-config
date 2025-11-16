@@ -100,7 +100,7 @@ require("lazy").setup({
 	},
 	"taybart/b64.nvim",
 	{ "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
-	"neovim/nvim-lspconfig",
+	{ "neovim/nvim-lspconfig" },
 	{ "hrsh7th/nvim-cmp", branch = "main" },
 	{ "hrsh7th/cmp-nvim-lsp", branch = "main" },
 	{ "hrsh7th/cmp-buffer", branch = "main" },
