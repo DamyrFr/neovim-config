@@ -102,6 +102,4 @@ require("lazy").setup({
 	{ "L3MON4D3/LuaSnip", branch = "master" },
 	"nvim-tree/nvim-tree.lua",
 	"nvim-tree/nvim-web-devicons",
-	"williamboman/mason.nvim",
-	"williamboman/mason-lspconfig.nvim"
 })

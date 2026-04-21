@@ -1,30 +1,18 @@
--- list LSP :
-local servers = { "pyright", "yamlls", "jsonls", "remark_ls", "bashls", "dockerls", "gopls", "jsonls", "terraformls", "lua_ls" }
--- Global mappings.
--- See `:help vim.diagnostic.*` for documentation on any of the below functions
+-- LSP servers — must be installed via Nix, e.g.:
+--   environment.systemPackages = [ pkgs.pyright pkgs.gopls pkgs.yaml-language-server ... ]
+local servers = { "pyright", "yamlls", "jsonls", "remark_ls", "bashls", "dockerls", "gopls", "lua_ls", "terraformls", "helm_ls", "ansiblels" }
+
+-- Diagnostic keymaps
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
--- Init Mason used for installing LSP on Neovim
--- Cf : https://github.com/williamboman/mason-lspconfig.nvim
-require("mason").setup()
-require("mason-lspconfig").setup {
-	ensure_installed = servers,
-	automatic_installation = true,
-}
 
-
--- Use LspAttach autocommand to only map the following keys
--- after the language server attaches to the current buffer
+-- LSP keymaps (applied when a server attaches to a buffer)
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
-    -- Enable completion triggered by <c-x><c-o>
     vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -46,105 +34,71 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- Add additional capabilities supported by nvim-cmp
+-- Base capabilities (nvim-cmp integration)
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
--- Setup all LSP servers using vim.lsp.config (new API for Neovim 0.11+)
-for _, lsp in pairs(servers) do
-  vim.lsp.config(lsp, {
-    capabilities = capabilities,
-  })
+-- Apply base capabilities to all servers
+for _, lsp in ipairs(servers) do
+  vim.lsp.config(lsp, { capabilities = capabilities })
 end
 
--- Custom setup for yamlls with Kubernetes schemas
-vim.lsp.config.yamlls = {
+-- yamlls: Kubernetes schemas + GitLab CI custom tags
+vim.lsp.config('yamlls', {
   capabilities = capabilities,
   settings = {
     yaml = {
       schemas = {
         kubernetes = {
-          "/*.k8s.yaml",
-          "/*.k8s.yml",
-          "/k8s/**/*.yaml",
-          "/k8s/**/*.yml",
-          "/kubernetes/**/*.yaml",
-          "/kubernetes/**/*.yml",
-          "/manifests/**/*.yaml",
-          "/manifests/**/*.yml",
-          "/deployment*.yaml",
-          "/deployment*.yml",
-          "/service*.yaml",
-          "/service*.yml",
-          "/ingress*.yaml",
-          "/ingress*.yml",
-          "/configmap*.yaml",
-          "/configmap*.yml",
-          "/secret*.yaml",
-          "/secret*.yml",
-        }
+          "/*.k8s.yaml", "/*.k8s.yml",
+          "/k8s/**/*.yaml", "/k8s/**/*.yml",
+          "/kubernetes/**/*.yaml", "/kubernetes/**/*.yml",
+          "/manifests/**/*.yaml", "/manifests/**/*.yml",
+          "/deployment*.yaml", "/deployment*.yml",
+          "/service*.yaml", "/service*.yml",
+          "/ingress*.yaml", "/ingress*.yml",
+          "/configmap*.yaml", "/configmap*.yml",
+          "/secret*.yaml", "/secret*.yml",
+        },
       },
-      customTags = {
-        "!reference sequence"
-      },
+      customTags = { "!reference sequence" },
     },
-  }
-}
+  },
+})
 
--- Custom setup for terraformls
-vim.lsp.config.terraformls = {
-  capabilities = capabilities,
-  filetypes = { "tf", "tfvar", "terraform" }
-}
+vim.lsp.enable(servers)
 
--- luasnip setup
-local luasnip = require 'luasnip'
+-- Snippets
+local luasnip = require('luasnip')
 
--- Load custom snippets
-local k8s_snippets = require("snippets.kubernetes")
-local gitlab_snippets = require("snippets.gitlab-ci")
-
--- Merge Kubernetes and GitLab CI snippets for YAML files
-local yaml_snippets = vim.list_extend(vim.deepcopy(k8s_snippets), gitlab_snippets)
+local yaml_snippets = vim.list_extend(
+  vim.deepcopy(require("snippets.kubernetes")),
+  require("snippets.gitlab-ci")
+)
 luasnip.add_snippets("yaml", yaml_snippets)
-
 luasnip.add_snippets("go", require("snippets.go"))
 luasnip.add_snippets("sh", require("snippets.sh"))
 luasnip.add_snippets("bash", require("snippets.sh"))
 
--- nvim-cmp setup
-local cmp = require 'cmp'
+-- Completion
+local cmp = require('cmp')
 cmp.setup {
   snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
+    expand = function(args) luasnip.lsp_expand(args.body) end,
   },
   mapping = cmp.mapping.preset.insert({
-    ['<C-u>'] = cmp.mapping.scroll_docs(-4), -- Up
-    ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
-    -- C-b (back) C-f (forward) for snippet placeholder navigation.
+    ['<C-u>']     = cmp.mapping.scroll_docs(-4),
+    ['<C-d>']     = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
+    ['<CR>']      = cmp.mapping.confirm { behavior = cmp.ConfirmBehavior.Replace, select = true },
     ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
+      if cmp.visible() then cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then luasnip.expand_or_jump()
+      else fallback() end
     end, { 'i', 's' }),
     ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
+      if cmp.visible() then cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then luasnip.jump(-1)
+      else fallback() end
     end, { 'i', 's' }),
   }),
   sources = {
